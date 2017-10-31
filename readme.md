@@ -7,6 +7,13 @@ Status: In Progress
 1. This project does not intent to implement all the API call that Logicboxes provided, I'll keep adding the one that I use in my project.
 2. The library does not parse the response into custom response, it will be the pure response from Logicboxes in JSON format. If you want to transform it, please use your own code to transform the response after get it from this library. 
 
+## Installation
+Install this application use `go get` command:
+```
+go get github.com/pangpondpon/go-logicboxes
+```
+Import and use the package (read Usage section below).
+
 ## Usage
 ```go
 package main

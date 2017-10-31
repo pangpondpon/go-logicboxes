@@ -8,11 +8,8 @@ Status: In Progress
 2. The library does not parse the response into custom response, it will be the pure response from Logicboxes in JSON format. If you want to transform it, please use your own code to transform the response after get it from this library. 
 
 ## Installation
-Install this application use `go get` command:
-```
-go get github.com/pangpondpon/go-logicboxes
-```
-Import and use the package (read Usage section below).
+I didn't publish this package to Go package directory yet. So if you want to use this package you'll need to run git clone to your go src and manually import it.
+TODO: Publish this package to Go package directory.
 
 ## Usage
 ```go

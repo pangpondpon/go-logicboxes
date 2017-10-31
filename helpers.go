@@ -2,10 +2,12 @@ package logicboxes
 
 import "net/url"
 
-func VariablesUrl(variables url.Values) string {
+// VariablesURL method use to change url.Values to the url string
+func VariablesURL(variables url.Values) string {
 	return variables.Encode()
 }
 
-func ResourceMethodUrl(resource, method string) string {
+// ResourceMethodURL method use to concat resource and method
+func ResourceMethodURL(resource, method string) string {
 	return resource + "/" + method + ".json?"
 }

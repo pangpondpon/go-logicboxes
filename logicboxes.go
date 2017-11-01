@@ -106,3 +106,9 @@ func (logicboxes Logicboxes) SearchContact(config configs.SearchContactConfig) (
 func (logicboxes Logicboxes) CreateContact(config configs.CreateContactConfig) (APIResponse, error) {
 	return logicboxes.CallByConfig(config)
 }
+
+// ValidateContactFor2ndLevelUKDomainName method is use to call Validating Contact Information for a 2nd Level .UK Domain Name API
+// The official API page is located at https://manage.netearthone.com/kb/answer/2187
+func (logicboxes Logicboxes) ValidateContactFor2ndLevelUKDomainName(config configs.ValidateContactFor2ndLevelUKDomainConfig) (APIResponse, error) {
+	return logicboxes.CallByConfig(config)
+}

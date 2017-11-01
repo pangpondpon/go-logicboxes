@@ -24,6 +24,8 @@ func (config SearchContactConfig) Method() string {
 
 // ToVariables is to transform config to url.Values
 func (config SearchContactConfig) ToVariables() (v url.Values) {
+	v = url.Values{}
+
 	v.Add("customer-id", config.CustomerID)
 	v.Add("no-of-records", strconv.Itoa(config.PerPage))
 	v.Add("page-no", strconv.Itoa(config.PageNo))

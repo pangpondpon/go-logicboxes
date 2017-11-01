@@ -39,11 +39,25 @@ func (config SearchContactConfig) IsGetMode() bool {
 // CreateContactConfig is the config of search contact API
 type CreateContactConfig struct {
 	// Required
-	ContactName, Company, Email, AddressLine1, City, Country, ZipCode, PhoneCC, Phone, CustomerID, ContactType string
+	ContactName  string `json:"name" binding:"required"`
+	Company      string `json:"company" binding:"required"`
+	Email        string `json:"email" binding:"required"`
+	AddressLine1 string `json:"address_line_1" binding:"required"`
+	City         string `json:"city" binding:"required"`
+	Country      string `json:"country" binding:"required"`
+	ZipCode      string `json:"zipcode" binding:"required"`
+	PhoneCC      string `json:"phone_cc" binding:"required"`
+	Phone        string `json:"phone" binding:"required"`
+	CustomerID   string `json:"customer_id" binding:"required"`
+	ContactType  string `json:"type" binding:"required"`
 
 	// Optional
-	AddressLine2, AddressLine3, State, FaxCC, Fax string
-	Attrs                                         map[string]string
+	AddressLine2 string            `json:"address_line_2"`
+	AddressLine3 string            `json:"address_line_3"`
+	State        string            `json:"state"`
+	FaxCC        string            `json:"fax_cc"`
+	Fax          string            `json:"fax"`
+	Attrs        map[string]string `json:"attrs"`
 }
 
 // Resource is use to get resource to call the API

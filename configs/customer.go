@@ -19,6 +19,8 @@ func (config GetCustomerDetailsFromEmailConfig) Method() string {
 
 // ToVariables is to transform config to url.Values
 func (config GetCustomerDetailsFromEmailConfig) ToVariables() (v url.Values) {
+	v = url.Values{}
+
 	v.Add("username", config.CustomerEmail)
 
 	return

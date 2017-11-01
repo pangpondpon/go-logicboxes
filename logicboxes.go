@@ -112,3 +112,9 @@ func (logicboxes Logicboxes) CreateContact(config configs.CreateContactConfig) (
 func (logicboxes Logicboxes) ValidateContactFor2ndLevelUKDomainName(config configs.ValidateContactFor2ndLevelUKDomainConfig) (APIResponse, error) {
 	return logicboxes.CallByConfig(config)
 }
+
+// RegisterDomain method is use to call Register Domain API
+// The official API page is located at https://manage.netearthone.com/kb/answer/752
+func (logicboxes Logicboxes) RegisterDomain(config configs.RegisterDomainConfig) (APIResponse, error) {
+	return logicboxes.CallByConfig(config)
+}

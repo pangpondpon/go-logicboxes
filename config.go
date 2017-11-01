@@ -7,4 +7,5 @@ type Config interface {
 	Resource() string
 	Method() string
 	ToVariables() (v url.Values)
+	IsGetMode() bool
 }

@@ -30,3 +30,8 @@ func (config SearchContactConfig) ToVariables() (v url.Values) {
 
 	return
 }
+
+// IsGetMode is to tell API request that this call use GET method
+func (config SearchContactConfig) IsGetMode() bool {
+	return true
+}

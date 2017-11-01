@@ -19,8 +19,14 @@ func (config CheckDomainAvailabilityConfig) Method() string {
 
 // ToVariables is to transform config to url.Values
 func (config CheckDomainAvailabilityConfig) ToVariables() (v url.Values) {
+	v = url.Values{}
 	v.Add("domain-name", config.DomainName)
 	v.Add("tlds", config.Tld)
 
 	return
+}
+
+// IsGetMode is to tell API request that this call use GET method
+func (config CheckDomainAvailabilityConfig) IsGetMode() bool {
+	return true
 }

@@ -3,6 +3,7 @@ package logicboxes
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -22,35 +23,39 @@ type Logicboxes struct {
 }
 
 // CallByConfig allow user to use a custom Config type to call the API
-func (logicboxes Logicboxes) CallByConfig(config Config) APIResponse {
-	return logicboxes.Call(config.Resource(), config.Method(), config.ToVariables(), logicboxes.TestMode)
+func (logicboxes Logicboxes) CallByConfig(config Config) (APIResponse, error) {
+	return logicboxes.Call(config.Resource(), config.Method(), config.ToVariables(), config.IsGetMode())
 }
 
 // Call allow user to call the API without using Config type
-func (logicboxes Logicboxes) Call(resource, method string, variables url.Values, testMode bool) map[string]interface{} {
+func (logicboxes Logicboxes) Call(resource, method string, variables url.Values, getMode bool) (APIResponse, error) {
 	u := fmt.Sprintf("%s%s%s%s", logicboxes.BaseURL(), ResourceMethodURL(resource, method), logicboxes.CredentialURL(), VariablesURL(variables))
 
 	var response *http.Response
 	var err error
 
-	if testMode {
+	if getMode {
 		response, err = http.Get(u)
 	} else {
 		response, err = http.Post(u, "text/plain", bytes.NewBuffer([]byte{}))
+	}
+
+	if response == nil {
+		return APIResponse{}, errors.New("Can't connect to Logicboxes")
 	}
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
 
 	if err != nil {
-		return nil
+		return APIResponse{}, err
 	}
 
 	// Transform body byte to json
-	var result map[string]interface{}
+	result := APIResponse{}
 	err = json.Unmarshal(bodyBytes, &result)
 
-	return result
+	return result, nil
 }
 
 // BaseURL method is for getting the base url to call the API
@@ -80,18 +85,18 @@ func NewLogicboxes(userID, apiKey string, testMode bool) Logicboxes {
 
 // CheckDomainAvailability method is use to call check domain availability API
 // The official API page is located at https://manage.logicboxes.com/kb/answer/764
-func (logicboxes Logicboxes) CheckDomainAvailability(config configs.CheckDomainAvailabilityConfig) APIResponse {
+func (logicboxes Logicboxes) CheckDomainAvailability(config configs.CheckDomainAvailabilityConfig) (APIResponse, error) {
 	return logicboxes.CallByConfig(config)
 }
 
 // GetCustomerDetailsFromEmail method is use to call get customer details using customer email
 // The official API page is located at https://manage.logicboxes.com/kb/answer/874
-func (logicboxes Logicboxes) GetCustomerDetailsFromEmail(config configs.GetCustomerDetailsFromEmailConfig) APIResponse {
+func (logicboxes Logicboxes) GetCustomerDetailsFromEmail(config configs.GetCustomerDetailsFromEmailConfig) (APIResponse, error) {
 	return logicboxes.CallByConfig(config)
 }
 
 // SearchContact method is use to call search contact API
 // The official API page is located at https://manage.logicboxes.com/kb/answer/793
-func (logicboxes Logicboxes) SearchContact(config configs.SearchContactConfig) APIResponse {
+func (logicboxes Logicboxes) SearchContact(config configs.SearchContactConfig) (APIResponse, error) {
 	return logicboxes.CallByConfig(config)
 }

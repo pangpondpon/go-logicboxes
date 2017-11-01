@@ -100,3 +100,9 @@ func (logicboxes Logicboxes) GetCustomerDetailsFromEmail(config configs.GetCusto
 func (logicboxes Logicboxes) SearchContact(config configs.SearchContactConfig) (APIResponse, error) {
 	return logicboxes.CallByConfig(config)
 }
+
+// CreateContact method is use to call create contact API
+// The official API page is located at https://manage.netearthone.com/kb/answer/790
+func (logicboxes Logicboxes) CreateContact(config configs.CreateContactConfig) (APIResponse, error) {
+	return logicboxes.CallByConfig(config)
+}

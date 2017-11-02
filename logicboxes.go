@@ -20,6 +20,7 @@ type APIResponse map[string]interface{}
 type Logicboxes struct {
 	UserID, APIKey string
 	TestMode       bool
+	Log            bool
 }
 
 // CallByConfig allow user to use a custom Config type to call the API
@@ -55,6 +56,10 @@ func (logicboxes Logicboxes) Call(resource, method string, variables url.Values,
 	result := APIResponse{}
 	err = json.Unmarshal(bodyBytes, &result)
 
+	if logicboxes.Log {
+		logicboxes.logRequestResponse(u, getMode, result)
+	}
+
 	return result, nil
 }
 
@@ -72,12 +77,45 @@ func (logicboxes Logicboxes) CredentialURL() string {
 	return fmt.Sprintf("auth-userid=%s&api-key=%s&", logicboxes.UserID, logicboxes.APIKey)
 }
 
+// logRequestResponse will log the URL, HTTP Method and the result to the terminal
+// It's good for debugging
+func (logicboxes Logicboxes) logRequestResponse(u string, getMode bool, result APIResponse) {
+	fmt.Println("\n[LOGICBOXES-debug] " + logicboxes.getHTTPMethodString(getMode) + "   " + u)
+	fmt.Println("Response:")
+	fmt.Println(result)
+	fmt.Println("")
+}
+
+// getHTTPMethodString return the full string name of method
+// Only GET and POST will be returned from this method
+func (logicboxes Logicboxes) getHTTPMethodString(getMode bool) string {
+	if getMode {
+		return "GET"
+	}
+
+	return "POST"
+}
+
 // NewLogicboxes function can be use to initilize the Logicboxes type instance
 func NewLogicboxes(userID, apiKey string, testMode bool) Logicboxes {
 	logicboxes := Logicboxes{
 		UserID:   userID,
 		APIKey:   apiKey,
 		TestMode: testMode,
+		Log:      false,
+	}
+
+	return logicboxes
+}
+
+// NewLogicboxesWithLogging function can be use to initilize the Logicboxes type instance
+// It will set Log property to true, so you'll see all the outgoing API call
+func NewLogicboxesWithLogging(userID, apiKey string, testMode bool) Logicboxes {
+	logicboxes := Logicboxes{
+		UserID:   userID,
+		APIKey:   apiKey,
+		TestMode: testMode,
+		Log:      true,
 	}
 
 	return logicboxes

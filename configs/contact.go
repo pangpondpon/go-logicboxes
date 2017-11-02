@@ -69,7 +69,7 @@ func (config CreateContactConfig) Resource() string {
 
 // Method is use to get method to call the API
 func (config CreateContactConfig) Method() string {
-	return "search"
+	return "add"
 }
 
 // ToVariables is to transform config to url.Values

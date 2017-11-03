@@ -13,7 +13,7 @@ import (
 )
 
 // APIResponse type is the type that return from the API call
-type APIResponse map[string]interface{}
+type APIResponse interface{}
 
 // Logicboxes type is the main type that user must initilize
 // and use this type as a base to call the API
@@ -42,18 +42,18 @@ func (logicboxes Logicboxes) Call(resource, method string, variables url.Values,
 	}
 
 	if response == nil {
-		return APIResponse{}, errors.New("Can't connect to Logicboxes")
+		return nil, errors.New("Can't connect to Logicboxes")
 	}
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
 
 	if err != nil {
-		return APIResponse{}, err
+		return nil, err
 	}
 
 	// Transform body byte to json
-	result := APIResponse{}
+	var result interface{}
 	err = json.Unmarshal(bodyBytes, &result)
 
 	if logicboxes.Log {

@@ -42,7 +42,7 @@ func (logicboxes Logicboxes) Call(resource, method string, variables url.Values,
 	}
 
 	if response == nil {
-		return nil, errors.New("Can't connect to Logicboxes")
+		return nil, errors.New("Can't connect to Logicboxes, please try again")
 	}
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)

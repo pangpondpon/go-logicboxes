@@ -80,10 +80,10 @@ func (config ValidateContactFor2ndLevelUKDomainConfig) ToVariables() (v url.Valu
 	v.Add("country", config.Country)
 
 	// Optional
-	v.Add("address-line-2", config.AddressLine2)
-	v.Add("address-line-3", config.AddressLine3)
-	v.Add("phone-cc", config.PhoneCC)
-	v.Add("phone", config.Phone)
+	AddToQueryIfValueIsNotEmptyString(&v, config.AddressLine2, "address-line-2")
+	AddToQueryIfValueIsNotEmptyString(&v, config.AddressLine3, "address-line-3")
+	AddToQueryIfValueIsNotEmptyString(&v, config.PhoneCC, "phone-cc")
+	AddToQueryIfValueIsNotEmptyString(&v, config.Phone, "phone")
 
 	return
 }

@@ -90,7 +90,7 @@ func (config ValidateContactFor2ndLevelUKDomainConfig) ToVariables() (v url.Valu
 
 // IsGetMode is to tell API request that this call use GET method
 func (config ValidateContactFor2ndLevelUKDomainConfig) IsGetMode() bool {
-	return false
+	return true
 }
 
 // RegisterDomainConfig is the config of register domain API

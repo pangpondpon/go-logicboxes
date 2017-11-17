@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
 
@@ -42,12 +43,14 @@ func (logicboxes Logicboxes) Call(resource, method string, variables url.Values,
 		response, err = logicboxes.HTTPClient.Post(u, "text/plain", bytes.NewBuffer([]byte{}))
 	}
 
-	if response == nil {
-		return nil, errors.New("Can't connect to Logicboxes, please try again")
+	fmt.Println(logicboxes.HTTPClient)
+
+	if e, ok := err.(net.Error); ok && e.Timeout() {
+		return nil, errors.New("Connect to LB timeout, please try again")
 	}
 
-	if err != nil {
-		return nil, err
+	if response == nil {
+		return nil, errors.New("Can't connect to Logicboxes, please try again")
 	}
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
@@ -102,7 +105,7 @@ func (logicboxes Logicboxes) getHTTPMethodString(getMode bool) string {
 }
 
 // SetHTTPClient use to set http client
-func (logicboxes Logicboxes) SetHTTPClient(httpClient *http.Client) {
+func (logicboxes *Logicboxes) SetHTTPClient(httpClient *http.Client) {
 	logicboxes.HTTPClient = httpClient
 }
 

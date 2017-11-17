@@ -21,6 +21,7 @@ type Logicboxes struct {
 	UserID, APIKey string
 	TestMode       bool
 	Log            bool
+	HTTPClient     *http.Client
 }
 
 // CallByConfig allow user to use a custom Config type to call the API
@@ -36,13 +37,17 @@ func (logicboxes Logicboxes) Call(resource, method string, variables url.Values,
 	var err error
 
 	if getMode {
-		response, err = http.Get(u)
+		response, err = logicboxes.HTTPClient.Get(u)
 	} else {
-		response, err = http.Post(u, "text/plain", bytes.NewBuffer([]byte{}))
+		response, err = logicboxes.HTTPClient.Post(u, "text/plain", bytes.NewBuffer([]byte{}))
 	}
 
 	if response == nil {
 		return nil, errors.New("Can't connect to Logicboxes, please try again")
+	}
+
+	if err != nil {
+		return nil, err
 	}
 
 	bodyBytes, err := ioutil.ReadAll(response.Body)
@@ -96,13 +101,19 @@ func (logicboxes Logicboxes) getHTTPMethodString(getMode bool) string {
 	return "POST"
 }
 
+// SetHTTPClient use to set http client
+func (logicboxes Logicboxes) SetHTTPClient(httpClient *http.Client) {
+	logicboxes.HTTPClient = httpClient
+}
+
 // NewLogicboxes function can be use to initilize the Logicboxes type instance
 func NewLogicboxes(userID, apiKey string, testMode bool) Logicboxes {
 	logicboxes := Logicboxes{
-		UserID:   userID,
-		APIKey:   apiKey,
-		TestMode: testMode,
-		Log:      false,
+		UserID:     userID,
+		APIKey:     apiKey,
+		TestMode:   testMode,
+		Log:        false,
+		HTTPClient: &http.Client{},
 	}
 
 	return logicboxes
@@ -112,10 +123,11 @@ func NewLogicboxes(userID, apiKey string, testMode bool) Logicboxes {
 // It will set Log property to true, so you'll see all the outgoing API call
 func NewLogicboxesWithLogging(userID, apiKey string, testMode bool) Logicboxes {
 	logicboxes := Logicboxes{
-		UserID:   userID,
-		APIKey:   apiKey,
-		TestMode: testMode,
-		Log:      true,
+		UserID:     userID,
+		APIKey:     apiKey,
+		TestMode:   testMode,
+		Log:        true,
+		HTTPClient: &http.Client{},
 	}
 
 	return logicboxes
